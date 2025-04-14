@@ -1,0 +1,12 @@
+HOST="localhost"
+PORT=5555
+
+GROQ_TOKEN = "YOUR_SECRET_GROQ_TOKEN"
+MODEL = "llama-3.3-70b-versatile"
+TEMPERATURE = 0
+MESSAGES = list()
+
+groq = {"GROQ_TOKEN" : GROQ_TOKEN,
+        "MODEL" : MODEL,
+        "TEMPERATURE" : TEMPERATURE,
+        "MESSAGES" : MESSAGES}
