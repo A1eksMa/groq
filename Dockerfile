@@ -16,7 +16,7 @@ RUN pip install --upgrade pip
 RUN pip install groq fastapi uvicorn
 
 # copy project
-COPY . .
+COPY ./groq .
 
 # Set port
 EXPOSE 5555
