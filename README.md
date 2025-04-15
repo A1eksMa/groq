@@ -1,5 +1,6 @@
 # GroqAPI
 
+## About
 FastAPI wrapper over GroqAPI.
 Set a few endpoints, that configures AI chat.
 
@@ -17,3 +18,10 @@ FastAPI server with three endpoints:
 `client.py`
 
 Examples of usage
+
+## Deploy
+
+```bash
+docker build -t groq .
+docker run -d -p 5555:5555 groq
+```
