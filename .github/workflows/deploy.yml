@@ -18,7 +18,7 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          fingerprint: ${{ secrets.SSH_KNOWN_HOSTS }}
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
 
       - name: Deploy
         run: |
