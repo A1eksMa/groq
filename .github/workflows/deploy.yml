@@ -21,8 +21,8 @@ jobs:
 
       - name: Deploy
         run: |
-          ssh -o StrictHostKeyCheking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.SERVER_DEPLOY_PATH }} && git pull origin main"
-          ssh -o StrictHostKeyCheking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.SERVER_DEPLOY_PATH }} && docker stop groq || true"
-          ssh -o StrictHostKeyCheking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.SERVER_DEPLOY_PATH }} && docker rm groq || true"
-          ssh -o StrictHostKeyCheking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.SERVER_DEPLOY_PATH }} && docker build -t groq ."
-          ssh -o StrictHostKeyCheking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.SERVER_DEPLOY_PATH }} && docker run -d -p 5555:5555 groq"
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.SERVER_DEPLOY_PATH }} && git pull origin main"
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.SERVER_DEPLOY_PATH }} && docker stop groq || true"
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.SERVER_DEPLOY_PATH }} && docker rm groq || true"
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.SERVER_DEPLOY_PATH }} && docker build -t groq ."
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.SERVER_DEPLOY_PATH }} && docker run -d -p 5555:5555 groq"
