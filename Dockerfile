@@ -13,7 +13,8 @@ RUN apt update && apt upgrade -y
 
 # install dependencies
 RUN pip install --upgrade pip
-RUN pip install groq fastapi uvicorn
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
 
 # copy project
 COPY ./groq .
