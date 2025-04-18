@@ -1,0 +1,29 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+
+      - name: Deploy
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.SERVER_DEPLOY_PATH }} && git pull origin main"
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.SERVER_DEPLOY_PATH }} && docker stop groq || true"
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.SERVER_DEPLOY_PATH }} && docker rm groq || true"
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.SERVER_DEPLOY_PATH }} && docker build -t groq ."
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.SERVER_DEPLOY_PATH }} && docker run -d -p 5555:5555 groq"
