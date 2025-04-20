@@ -21,20 +21,20 @@ def groq_api(groq: dict = default_groq):
             "STOP": None,
            }
     """
-    if not groq["STREAM"]:
-	client = Groq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"])
-	completion = client.chat.completions.create(
-	model=groq["MODEL"],
-	messages=groq["MESSAGES"],
-	temperature=groq["TEMPERATURE"],
-	max_completion_tokens=groq["MAX_COMPLETION_TOKENS"],
-	top_p=groq["TOP_P"],
-	stream=groq["STREAM"],
-	stop=groq["STOP"],
-	)
-	return completion.choices[0].message.content
+    if groq["STREAM"]:
+        pass
     else:
-	return ""
+        client = Groq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"])
+        completion = client.chat.completions.create(
+        model=groq["MODEL"],
+        messages=groq["MESSAGES"],
+        temperature=groq["TEMPERATURE"],
+        max_completion_tokens=groq["MAX_COMPLETION_TOKENS"],
+        top_p=groq["TOP_P"],
+        stream=groq["STREAM"],
+        stop=groq["STOP"],
+        )
+        return completion.choices[0].message.content
 
 if __name__=="__main__":
     uvicorn.run(app, host=HOST, port=PORT)
