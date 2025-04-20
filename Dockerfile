@@ -23,4 +23,4 @@ COPY ./groq .
 EXPOSE 5555
 
 # run
-CMD ["python3", "/groq/server.py"]
+CMD ["python3", "/groq/main.py"]
