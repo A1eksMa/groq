@@ -43,7 +43,7 @@ def groq_single_prompt(prompt: str):
         global YOUR_SECRET_GROQ_TOKEN
         groq = {"YOUR_SECRET_GROQ_TOKEN" : YOUR_SECRET_GROQ_TOKEN,
             "MODEL" : "llama-3.3-70b-versatile",
-            "MESSAGES" : list({'role' : 'user', 'content' : prompt}),
+            "MESSAGES" : list(),
             "TEMPERATURE" : 1,
 	    "MAX_COMPLETION_TOKENS": 1024,
 	    "TOP_P": 1,
@@ -53,7 +53,7 @@ def groq_single_prompt(prompt: str):
         client = Groq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"])
         completion = client.chat.completions.create(
             model=groq["MODEL"],
-            messages=groq["MESSAGES"],
+            messages=groq["MESSAGES"].append({'role' : 'user', 'content' : prompt}),
             temperature=groq["TEMPERATURE"],
             max_completion_tokens=groq["MAX_COMPLETION_TOKENS"],
             top_p=groq["TOP_P"],
