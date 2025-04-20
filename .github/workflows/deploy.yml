@@ -19,8 +19,9 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ${{ secrets.SERVER_DEPLOY_PATH }} && git pull origin main
-            cd ${{ secrets.SERVER_DEPLOY_PATH }} && docker stop groq || true
-            cd ${{ secrets.SERVER_DEPLOY_PATH }} && docker rm groq || true
-            cd ${{ secrets.SERVER_DEPLOY_PATH }} && docker build -t groq .
-            cd ${{ secrets.SERVER_DEPLOY_PATH }} && docker run -d -p 5555:5555 groq
+            cd ${{ secrets.SERVER_DEPLOY_PATH }}
+            git pull origin main
+            docker container stop groq || true
+            docker container rm groq || true
+            docker build -t groq .
+            docker run -d -p 5555:5555 --name groq groq
