@@ -39,7 +39,7 @@ def groq_api(groq: dict = default_groq):
 
 @app.get("/groq_single_prompt")
 def groq_single_prompt(prompt: str):
-    try:
+    if True:
 	global YOUR_SECRET_GROQ_TOKEN
         groq = {"YOUR_SECRET_GROQ_TOKEN" : YOUR_SECRET_GROQ_TOKEN,
             "MODEL" : "llama-3.3-70b-versatile",
@@ -61,7 +61,7 @@ def groq_single_prompt(prompt: str):
             stop=groq["STOP"],
         )
         return completion.choices[0].message.content
-    except:
+    else:
         return "The service is temporarily unavailable."
 	    
 if __name__=="__main__":
