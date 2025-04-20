@@ -7,7 +7,6 @@ from config import YOUR_SECRET_GROQ_TOKEN
 
 app = FastAPI()
 
-
 @app.post("/")
 def groq_api(groq: dict = default_groq):
     """
