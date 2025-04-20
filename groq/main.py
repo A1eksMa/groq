@@ -40,7 +40,7 @@ def groq_api(groq: dict = default_groq):
 @app.get("/groq_single_prompt")
 def groq_single_prompt(prompt: str):
     if True:
-	global YOUR_SECRET_GROQ_TOKEN
+        global YOUR_SECRET_GROQ_TOKEN
         groq = {"YOUR_SECRET_GROQ_TOKEN" : YOUR_SECRET_GROQ_TOKEN,
             "MODEL" : "llama-3.3-70b-versatile",
             "MESSAGES" : list({'role' : 'user', 'content' : prompt}),
