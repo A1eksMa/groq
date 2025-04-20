@@ -35,7 +35,7 @@ def groq_api(groq: dict = default_groq):
         stream=groq["STREAM"],
         stop=groq["STOP"],
         )
-        return completion.choices[0].message.content.replace('\\n', '\n')
+        return completion.choices[0].message.content
 
 if __name__=="__main__":
     uvicorn.run(app, host=HOST, port=PORT)
