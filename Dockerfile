@@ -14,7 +14,7 @@ RUN apt update && apt upgrade -y
 # install dependencies
 RUN pip install --upgrade pip
 COPY ./requirements.txt .
-RUN pip install -r /groq/requirements.txt
+RUN pip install -r requirements.txt
 
 # copy project
 COPY ./groq .
