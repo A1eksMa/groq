@@ -22,11 +22,11 @@ def get_completion(groq):
     return completion.choices[0].message.content
 
 @app.post("/")
-def groq_api(groq: dict = default_groq):
+async def groq_api(groq: dict = default_groq):
     if groq["STREAM"]:
         pass
     else:
-        return get_completion(groq)
+        return await get_completion(groq)
 
 
 @app.get("/groq_single_prompt")
