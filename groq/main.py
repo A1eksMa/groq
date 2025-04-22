@@ -10,10 +10,8 @@ app = FastAPI()
 
 @app.post("/")
 async def groq_api(groq: dict = default_groq):
-    loop = asyncio.get_running_loop()
-    client = Groq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"])
-    completion =  await loop.run_in_executor(None,
-	client.chat.completions.create,
+    completion =  await asyncio.get_running_loop().run_in_executor(None,
+	Groq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"]).chat.completions.create,
             model=groq["MODEL"],
             messages=groq["MESSAGES"],
             temperature=groq["TEMPERATURE"],
