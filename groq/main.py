@@ -8,9 +8,11 @@ import asyncio
 
 app = FastAPI()
 
-def get_completion(groq):
+async def get_completion(groq):
+    loop = asyncio.get_running_loop()
     client = Groq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"])
-    completion = client.chat.completions.create(
+    completion =  await loop.run_in_executor(None,
+	client.chat.completions.create(
         model=groq["MODEL"],
         messages=groq["MESSAGES"],
         temperature=groq["TEMPERATURE"],
@@ -18,6 +20,7 @@ def get_completion(groq):
         top_p=groq["TOP_P"],
         stream=groq["STREAM"],
         stop=groq["STOP"],
+        )
     )
     return completion.choices[0].message.content
 
