@@ -8,8 +8,7 @@ import asyncio
 
 app = FastAPI()
 
-@app.post("/")
-def groq_api(groq: dict = default_groq):
+async def run_groq(groq: dict):
     completion =  Groq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"]).chat.completions.create(
             model=groq["MODEL"],
             messages=groq["MESSAGES"],
@@ -20,6 +19,11 @@ def groq_api(groq: dict = default_groq):
             stop=groq["STOP"],
         )
     return completion.choices[0].message.content
+	
+@app.post("/")
+def groq_api(groq: dict = default_groq):
+    loop = asyncio.get_running_loop()
+    return await loop.run_in_executor(None, run_groq, groq)
 
 
 @app.get("/groq_single_prompt")
