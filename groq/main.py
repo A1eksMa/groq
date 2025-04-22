@@ -21,7 +21,7 @@ async def run_groq(groq: dict):
     return completion.choices[0].message.content
 	
 @app.post("/")
-def groq_api(groq: dict = default_groq):
+async def groq_api(groq: dict = default_groq):
     loop = asyncio.get_running_loop()
     response = await loop.run_in_executor(None, run_groq, groq)
     return responce
