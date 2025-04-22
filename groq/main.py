@@ -13,13 +13,13 @@ async def get_completion(groq):
     client = Groq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"])
     completion =  await loop.run_in_executor(None,
 	client.chat.completions.create,
-        model=groq["MODEL"],
-        messages=groq["MESSAGES"],
-        temperature=groq["TEMPERATURE"],
-        max_completion_tokens=groq["MAX_COMPLETION_TOKENS"],
-        top_p=groq["TOP_P"],
-        stream=groq["STREAM"],
-        stop=groq["STOP"]
+        groq["MODEL"],
+        groq["MESSAGES"],
+        groq["TEMPERATURE"],
+        groq["MAX_COMPLETION_TOKENS"],
+        groq["TOP_P"],
+        groq["STREAM"],
+        groq["STOP"]
         )
     return completion.choices[0].message.content
 
