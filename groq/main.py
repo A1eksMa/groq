@@ -22,8 +22,7 @@ def groq_api(groq: dict = default_groq):
         )
     return completion.choices[0].message.content
 
-@app.get("/groq_single_prompt")
-def groq_single_prompt(prompt: str):
+async def get_single(prompt: str):
     if True:
         global YOUR_SECRET_GROQ_TOKEN
         groq = {"YOUR_SECRET_GROQ_TOKEN" : YOUR_SECRET_GROQ_TOKEN,
@@ -48,6 +47,12 @@ def groq_single_prompt(prompt: str):
         return completion.choices[0].message.content
     else:
         return "The service is temporarily unavailable."
+
+@app.get("/groq_single_prompt")
+async def groq_single_prompt(prompt: str):
+    loop = asyncio.get_running_loop()
+    result = await loop.run_in_executor(None, get_single, prompt)
+    return result
 	    
 if __name__=="__main__":
     uvicorn.run(app, host=HOST, port=PORT)
