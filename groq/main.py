@@ -4,29 +4,13 @@ import uvicorn
 from config import HOST, PORT
 from config import default_groq
 from config import YOUR_SECRET_GROQ_TOKEN
+import asyncio
 
 app = FastAPI()
 
-@app.post("/")
-def groq_api(groq: dict = default_groq):
-    """
-    Example of usage.
-    Set `groq` variable:
-    groq = {"YOUR_SECRET_GROQ_TOKEN" : YOUR_SECRET_GROQ_TOKEN,
-            "MODEL" : "llama-3.3-70b-versatile",
-            "MESSAGES" : list(),
-            "TEMPERATURE" : 1,
-	    "MAX_COMPLETION_TOKENS": 1024,
-	    "TOP_P": 1,
-            "STREAM": False,
-            "STOP": None,
-           }
-    """
-    if groq["STREAM"]:
-        pass
-    else:
+async def get_completion(groq):
         client = Groq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"])
-        completion = client.chat.completions.create(
+        completion = await client.chat.completions.create(
             model=groq["MODEL"],
             messages=groq["MESSAGES"],
             temperature=groq["TEMPERATURE"],
@@ -36,6 +20,14 @@ def groq_api(groq: dict = default_groq):
             stop=groq["STOP"],
         )
         return completion.choices[0].message.content
+
+@app.post("/")
+async def groq_api(groq: dict = default_groq):
+    if groq["STREAM"]:
+        pass
+    else:
+        return await get_completion(groq)
+
 
 @app.get("/groq_single_prompt")
 def groq_single_prompt(prompt: str):
