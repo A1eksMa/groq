@@ -21,7 +21,6 @@ async def groq_api(groq: dict = default_groq):
         )
     return completion.choices[0].message.content
 
-
 @app.get("/groq_single_prompt")
 def groq_single_prompt(prompt: str):
     if True:
