@@ -10,7 +10,7 @@ app = FastAPI()
 
 @app.post("/")
 def groq_api(groq: dict = default_groq):
-    completion =  Groq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"]).chat.completions.create(),
+    completion =  Groq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"]).chat.completions.create(
             model=groq["MODEL"],
             messages=groq["MESSAGES"],
             temperature=groq["TEMPERATURE"],
