@@ -23,7 +23,8 @@ async def run_groq(groq: dict):
 @app.post("/")
 def groq_api(groq: dict = default_groq):
     loop = asyncio.get_running_loop()
-    return await loop.run_in_executor(None, run_groq, groq)
+    response = await loop.run_in_executor(None, run_groq, groq)
+    return responce
 
 
 @app.get("/groq_single_prompt")
