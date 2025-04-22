@@ -1,4 +1,3 @@
-from groq import Groq
 from groq import AsyncGroq
 from fastapi import FastAPI
 import uvicorn
@@ -24,7 +23,7 @@ async def groq_api(groq: dict = default_groq):
     return completion.choices[0].message.content
 
 @app.get("/groq_single_prompt")
-def groq_single_prompt(prompt: str):
+async def groq_single_prompt(prompt: str):
     if True:
         global YOUR_SECRET_GROQ_TOKEN
         groq = {"YOUR_SECRET_GROQ_TOKEN" : YOUR_SECRET_GROQ_TOKEN,
@@ -36,8 +35,8 @@ def groq_single_prompt(prompt: str):
             "STREAM": False,
             "STOP": None,
            }
-        client = Groq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"])
-        completion = client.chat.completions.create(
+        client = AsyncGroq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"])
+        completion = await client.chat.completions.create(
             model=groq["MODEL"],
             messages=groq["MESSAGES"],
             temperature=groq["TEMPERATURE"],
