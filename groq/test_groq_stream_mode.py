@@ -18,5 +18,5 @@ completion = client.chat.completions.create(
         stop=groq["STOP"],
         )
 
-for chank in completion:
+for chunk in completion:
     print(chunk.choices[0].delta.content or "", end="")
