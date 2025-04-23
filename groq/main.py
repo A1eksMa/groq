@@ -41,7 +41,7 @@ async def groq_api_stream_true(groq: dict = default_groq):
         async for chunk in completion:
             yield chunk.choices[0].delta.content or ""
 
-    return StreamingResponse(stream(completion), media_type="text/plain")
+    return Response(stream(completion), media_type="text/plain")
 
 @app.get("/groq_single_prompt")
 async def groq_single_prompt(prompt: str):
