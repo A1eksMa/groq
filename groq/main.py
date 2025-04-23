@@ -9,6 +9,10 @@ import asyncio
 
 app = FastAPI()
 
+async def stream(completion):
+    async for chunk in completion:
+        yield chunk.choices[0].delta.content or ""
+
 @app.post("/")
 async def groq_api(groq: dict = default_groq):
     client = AsyncGroq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"])
@@ -36,11 +40,6 @@ async def groq_api_stream_true(groq: dict = default_groq):
             stream=True,
             stop=groq["STOP"],
         )
-
-    async def stream(completion):
-        async for chunk in completion:
-            yield chunk.choices[0].delta.content or ""
-
     return StreamingResponse(stream(completion), media_type="text/plain")
 
 @app.get("/groq_single_prompt")
