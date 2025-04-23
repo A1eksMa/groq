@@ -74,7 +74,7 @@ Select a `model` from the list of available models:
 - "playai-tts"
 - "playai-tts-arabic"
 - "allam-2-7b"  
-(see actual models [Groq API](https://github.com/groq/groq-python/) or [console.groq.com](https://console.groq.com))  
+(see actual models at the [Groq API](https://github.com/groq/groq-python/) or [console.groq.com](https://console.groq.com))  
 
 The API response:
 - Normal mode: multistring literal (stream=`False`),
