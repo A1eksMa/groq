@@ -1,5 +1,5 @@
 from groq import AsyncGroq
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, StreamingResponse
 import uvicorn
 from config import HOST, PORT
 from config import default_groq
@@ -41,7 +41,7 @@ async def groq_api_stream_true(groq: dict = default_groq):
         async for chunk in completion:
             yield chunk.choices[0].delta.content or ""
 
-    return Response(stream(completion), media_type="text/plain")
+    return StreamingResponse(stream(completion), media_type="text/plain")
 
 @app.get("/groq_single_prompt")
 async def groq_single_prompt(prompt: str):
