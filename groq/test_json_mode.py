@@ -19,7 +19,6 @@ async def main():
         response_format={'type': 'json_object'},
         stop=groq["STOP"],
     )
-
-    return completion.choices[0].message.content
+    print(completion.choices[0].message.content)
 
 asyncio.run(main())
