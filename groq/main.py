@@ -1,5 +1,5 @@
 from groq import AsyncGroq
-from fastapi import FastAPI#, StreamingResponse
+from fastapi import FastAPI, Response
 import uvicorn
 from config import HOST, PORT
 from config import default_groq
@@ -9,8 +9,6 @@ import asyncio
 app = FastAPI()
 
 async def handle_stream(groq):
-    pass
-    """
     client = AsyncGroq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"])
     async for message in client.chat.completions.create(
             model=groq["MODEL"],
@@ -22,11 +20,11 @@ async def handle_stream(groq):
             stop=groq["STOP"],
         ):
         yield message.choices[0].message.content
-    """
+
 @app.post("/")
 async def groq_api(groq: dict = default_groq):
     if groq["STREAM"]:
-        return "Underconstruction"#StreamingResponse(handle_stream(groq), media_type="text/event-stream")
+        return Response(handle_stream(groq), media_type="text/event-stream")
     else:
         client = AsyncGroq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"])
         completion = await client.chat.completions.create(
