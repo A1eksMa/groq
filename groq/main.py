@@ -31,7 +31,16 @@ async def groq_api(groq: dict):
         return StreamingResponse(stream(completion), media_type="text/plain")
     else:
         if "RESPONSE_FORMAT" in groq.keys():
-            pass
+            completion = await client.chat.completions.create(
+                model=groq["MODEL"],
+                messages=groq["MESSAGES"],
+                temperature=groq["TEMPERATURE"],
+                max_completion_tokens=groq["MAX_COMPLETION_TOKENS"],
+                top_p=groq["TOP_P"],
+                stream=groq["STREAM"],
+                response_format={'type': 'json_object'},
+                stop=groq["STOP"],
+                )
         else:
             completion = await client.chat.completions.create(
                 model=groq["MODEL"],
@@ -42,7 +51,7 @@ async def groq_api(groq: dict):
                 stream=groq["STREAM"],
                 stop=groq["STOP"],
                 )
-            return completion.choices[0].message.content
+        return completion.choices[0].message.content
 
 @app.get("/groq_single_prompt")
 async def groq_single_prompt(prompt: str):
