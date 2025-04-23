@@ -6,15 +6,14 @@ FastAPI wrapper over GroqAPI.
 
 ## Deploy
 
-To run api from container, clone this repository to remoute host:
+To run the API from container, clone this repository to remoute host:
 ```bash
 git clone https://github.com/A1eksMa/groq/
-cd groq
 ```
 
-Put your groq token into `YOUR_SECRET_GROQ_TOKEN` variable in `groq/groq/config.py` (or create `groq/groq/.env` file).  
-To configure port in the `PORT` variable in `groq/config.py`.  
-Build container from `Dockerfile` and run it:
+Put your groq token into `YOUR_SECRET_GROQ_TOKEN` variable in the `groq/groq/config.py` (or create `groq/groq/.env` file).  
+To configure port in the `PORT` variable in the `groq/config.py`.  
+Build the container from `Dockerfile` and run it:
 ```bash
 docker build -t groq .
 docker run -d -p 5555:5555 --name groq groq
@@ -24,7 +23,7 @@ docker run -d -p 5555:5555 --name groq groq
 
 To use API you need the Groq API token from [console.groq.com](https://console.groq.com).  
 
-The main endpoint of API to transfer at original Groq API 8 params:
+The main endpoint of the API transfer to original Groq API 8 params.  
 Build the dictionary with a Groq API parametres and send a POST request to API.
 ```
 groq_api_params = {
@@ -41,7 +40,7 @@ groq_api_params = {
 ```
 (see [Groq API](https://github.com/groq/groq-python/) for details)  
 
-A `messages` contains the context, and looks like a:
+A `messages` contains the context, and looks like a list of dict:
 ```
 [
     {
@@ -75,8 +74,9 @@ Select a `model` from the list of available models:
 - "playai-tts"
 - "playai-tts-arabic"
 - "allam-2-7b"
+(see actual models [Groq API](https://github.com/groq/groq-python/) or [console.groq.com](https://console.groq.com))  
 
-The API response type in the:
+The API response:
 - Normal mode: multistring literal (stream=`False`),
 - JSON mode: JSON file (stream=`False` and response_format=`{'type': 'json_object'}`),
 - Stream mode: stream output (stream=`True`).
@@ -146,10 +146,13 @@ groq_api_params = {
 }
 
 # Add system prompt
-groq_api_params["MESSAGES"].append({'role' : 'system', 'content' : 'Always return me json, that looks like a:{"ANSWER": text string with your message}'})
+groq_api_params["MESSAGES"].append({'role' : 'system',
+                                    'content' : 'Always return me json, that looks like a:\
+                                               {"ANSWER": text string with your message}'})
 
 # Add prompt
-groq_api_params["MESSAGES"].append({'role' : 'user', 'content' : 'Hello World!'})
+groq_api_params["MESSAGES"].append({'role' : 'user',
+                                    'content' : 'Hello World!'})
 
 # Send a POST request to the API
 response = requests.post(URL, json=groq_api_params)
@@ -166,9 +169,9 @@ else:
 
 Output (JSON):
 ```
-> {
->    "ANSWER": "Hello, welcome to our conversation, how can I assist you today?"
-> }
+{
+   "ANSWER": "Hello, welcome to our conversation, how can I assist you today?"
+}
 ```
 
 ### Stream mode
