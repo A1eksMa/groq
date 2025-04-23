@@ -32,7 +32,7 @@ async def groq_api(groq: dict):
     else:
         if "RESPONSE_FORMAT" in groq.keys():
             pass
-	else:
+        else:
             completion = await client.chat.completions.create(
                 model=groq["MODEL"],
                 messages=groq["MESSAGES"],
