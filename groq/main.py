@@ -25,22 +25,10 @@ async def groq_api(groq: dict = default_groq):
             stream=groq["STREAM"],
             stop=groq["STOP"],
         )
-    return completion.choices[0].message.content
-
-@app.post("/stream_true")
-async def groq_api_stream_true(groq: dict = default_groq):
-    groq["STREAM"] = True
-    client = AsyncGroq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"])
-    completion = await client.chat.completions.create(
-            model=groq["MODEL"],
-            messages=groq["MESSAGES"],
-            temperature=groq["TEMPERATURE"],
-            max_completion_tokens=groq["MAX_COMPLETION_TOKENS"],
-            top_p=groq["TOP_P"],
-            stream=True,
-            stop=groq["STOP"],
-        )
-    return StreamingResponse(stream(completion), media_type="text/plain")
+    if groq["STREAM"]:
+        return StreamingResponse(stream(completion), media_type="text/plain")
+    else:
+        return completion.choices[0].message.content
 
 @app.get("/groq_single_prompt")
 async def groq_single_prompt(prompt: str):
