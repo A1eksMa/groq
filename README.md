@@ -73,7 +73,7 @@ Select a `model` from the list of available models:
 - "whisper-large-v3-turbo"
 - "playai-tts"
 - "playai-tts-arabic"
-- "allam-2-7b"
+- "allam-2-7b"  
 (see actual models [Groq API](https://github.com/groq/groq-python/) or [console.groq.com](https://console.groq.com))  
 
 The API response:
