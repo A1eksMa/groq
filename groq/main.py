@@ -1,5 +1,6 @@
 from groq import AsyncGroq
-from fastapi import FastAPI, StreamingResponse
+from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
 import uvicorn
 from config import HOST, PORT
 from config import default_groq
