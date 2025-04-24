@@ -1,6 +1,5 @@
 # GroqAPI
 
-
 ## About
 FastAPI wrapper over GroqAPI.
 
