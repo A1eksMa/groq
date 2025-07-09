@@ -3,7 +3,7 @@
 
 
 ## About
-FastAPI wrapper over GroqAPI.
+FastAPI wrapper over GroqAPI. 
 
 ## Deploy
 
