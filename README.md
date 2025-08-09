@@ -28,15 +28,16 @@ The main endpoint of the API transfer to original Groq API 8 params.
 Build the dictionary with a Groq API parametres and send a POST request to API.
 ```
 groq_api_params = {
-    "YOUR_SECRET_GROQ_TOKEN": "Groq_API_token",
-    "MODEL": model: str,
-    "MESSAGES": messages: Iterable[ChatCompletionMessageParam],
-    "TEMPERATURE": temperature: Optional[float] | NotGiven = NOT_GIVEN,
-    "MAX_COMPLETION_TOKENS": max_completion_tokens: Optional[int] | NotGiven = NOT_GIVEN,
-    "TOP_P": top_p: Optional[float] | NotGiven = NOT_GIVEN,
-    "STREAM": stream: Optional[Literal[False]] | NotGiven = NOT_GIVEN,
-    "RESPONSE_FORMAT": response_format: Optional[completion_create_params.ResponseFormat] | NotGiven = NOT_GIVEN,
-    "STOP": stop: Union[Optional[str], List[str], None] | NotGiven = NOT_GIVEN,
+    "YOUR_SECRET_GROQ_TOKEN": {
+        "MODEL": model: str,
+        "MESSAGES": messages: Iterable[ChatCompletionMessageParam],
+        "TEMPERATURE": temperature: Optional[float] | NotGiven = NOT_GIVEN,
+        "MAX_COMPLETION_TOKENS": max_completion_tokens: Optional[int] | NotGiven = NOT_GIVEN,
+        "TOP_P": top_p: Optional[float] | NotGiven = NOT_GIVEN,
+        "STREAM": stream: Optional[Literal[False]] | NotGiven = NOT_GIVEN,
+        "RESPONSE_FORMAT": response_format: Optional[completion_create_params.ResponseFormat] | NotGiven = NOT_GIVEN,
+        "STOP": stop: Union[Optional[str], List[str], None] | NotGiven = NOT_GIVEN,
+    }
 }
 ```
 (see [Groq API](https://github.com/groq/groq-python/) for details)  
@@ -96,14 +97,15 @@ prompt = "Hello World!"
 
 # Set the dictionary for Groq API parametres
 groq_api_params = {
-    "YOUR_SECRET_GROQ_TOKEN": "Groq_API_token",
-    "MODEL": "llama-3.3-70b-versatile",
-    "MESSAGES": [{"role": "user", "content": prompt}],
-    "TEMPERATURE": 1,
-    "MAX_COMPLETION_TOKENS": 1024,
-    "TOP_P": 1,
-    "STREAM": False,
-    "STOP": None,
+    "YOUR_SECRET_GROQ_TOKEN": {
+        "MODEL": "llama-3.3-70b-versatile",
+        "MESSAGES": [{"role": "user", "content": prompt}],
+        "TEMPERATURE": 1,
+        "MAX_COMPLETION_TOKENS": 1024,
+        "TOP_P": 1,
+        "STREAM": False,
+        "STOP": None,
+    }
 }
 
 # Send a POST request to the API
@@ -135,24 +137,25 @@ URL = f"http://{HOST}:{PORT}/"
 
 # Set the dictionary for Groq API parametres
 groq_api_params = {
-    "YOUR_SECRET_GROQ_TOKEN": "Groq_API_token",
-    "MODEL": "llama-3.3-70b-versatile",
-    "MESSAGES": list(),
-    "TEMPERATURE": 1,
-    "MAX_COMPLETION_TOKENS": 1024,
-    "TOP_P": 1,
-    "STREAM": False,
-    "RESPONSE_FORMAT": {'type': 'json_object'},
-    "STOP": None,
+    "YOUR_SECRET_GROQ_TOKEN": {
+        "MODEL": "llama-3.3-70b-versatile",
+        "MESSAGES": list(),
+        "TEMPERATURE": 1,
+        "MAX_COMPLETION_TOKENS": 1024,
+        "TOP_P": 1,
+        "STREAM": False,
+        "RESPONSE_FORMAT": {'type': 'json_object'},
+        "STOP": None,
+    }
 }
 
 # Add system prompt
-groq_api_params["MESSAGES"].append({'role' : 'system',
+groq_api_params["YOUR_SECRET_GROQ_TOKEN"]["MESSAGES"].append({'role' : 'system',
                                     'content' : 'Always return me json, that looks like a:\
                                                {"ANSWER": text string with your message}'})
 
 # Add prompt
-groq_api_params["MESSAGES"].append({'role' : 'user',
+groq_api_params["YOUR_SECRET_GROQ_TOKEN"]["MESSAGES"].append({'role' : 'user',
                                     'content' : 'Hello World!'})
 
 # Send a POST request to the API
@@ -188,14 +191,15 @@ prompt = "Hello World!"
 
 # Set the dictionary for Groq API parametres
 groq_api_params = {
-    "YOUR_SECRET_GROQ_TOKEN": "Groq_API_token",
-    "MODEL": "llama-3.3-70b-versatile",
-    "MESSAGES": [{"role": "user", "content": prompt}],
-    "TEMPERATURE": 1,
-    "MAX_COMPLETION_TOKENS": 1024,
-    "TOP_P": 1,
-    "STREAM": True,
-    "STOP": None,
+    "YOUR_SECRET_GROQ_TOKEN": {
+        "MODEL": "llama-3.3-70b-versatile",
+        "MESSAGES": [{"role": "user", "content": prompt}],
+        "TEMPERATURE": 1,
+        "MAX_COMPLETION_TOKENS": 1024,
+        "TOP_P": 1,
+        "STREAM": True,
+        "STOP": None,
+    }
 }
 
 # Send a POST request to the API

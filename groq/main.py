@@ -16,40 +16,42 @@ async def stream(completion):
 @app.post("/")
 async def groq_api(groq: dict):
 	
-    client = AsyncGroq(api_key=groq["YOUR_SECRET_GROQ_TOKEN"])
+    api_key = list(groq.keys())[0]
+    params = groq[api_key]
+    client = AsyncGroq(api_key=api_key)
 	
-    if groq["STREAM"]:
+    if params["STREAM"]:
         completion = await client.chat.completions.create(
-            model=groq["MODEL"],
-            messages=groq["MESSAGES"],
-            temperature=groq["TEMPERATURE"],
-            max_completion_tokens=groq["MAX_COMPLETION_TOKENS"],
-            top_p=groq["TOP_P"],
-            stream=groq["STREAM"],
-            stop=groq["STOP"],
+            model=params["MODEL"],
+            messages=params["MESSAGES"],
+            temperature=params["TEMPERATURE"],
+            max_completion_tokens=params["MAX_COMPLETION_TOKENS"],
+            top_p=params["TOP_P"],
+            stream=params["STREAM"],
+            stop=params["STOP"],
             )
         return StreamingResponse(stream(completion), media_type="text/plain")
     else:
-        if "RESPONSE_FORMAT" in groq.keys():
+        if "RESPONSE_FORMAT" in params.keys():
             completion = await client.chat.completions.create(
-                model=groq["MODEL"],
-                messages=groq["MESSAGES"],
-                temperature=groq["TEMPERATURE"],
-                max_completion_tokens=groq["MAX_COMPLETION_TOKENS"],
-                top_p=groq["TOP_P"],
-                stream=groq["STREAM"],
+                model=params["MODEL"],
+                messages=params["MESSAGES"],
+                temperature=params["TEMPERATURE"],
+                max_completion_tokens=params["MAX_COMPLETION_TOKENS"],
+                top_p=params["TOP_P"],
+                stream=params["STREAM"],
                 response_format={'type': 'json_object'},
-                stop=groq["STOP"],
+                stop=params["STOP"],
                 )
         else:
             completion = await client.chat.completions.create(
-                model=groq["MODEL"],
-                messages=groq["MESSAGES"],
-                temperature=groq["TEMPERATURE"],
-                max_completion_tokens=groq["MAX_COMPLETION_TOKENS"],
-                top_p=groq["TOP_P"],
-                stream=groq["STREAM"],
-                stop=groq["STOP"],
+                model=params["MODEL"],
+                messages=params["MESSAGES"],
+                temperature=params["TEMPERATURE"],
+                max_completion_tokens=params["MAX_COMPLETION_TOKENS"],
+                top_p=params["TOP_P"],
+                stream=params["STREAM"],
+                stop=params["STOP"],
                 )
         return completion.choices[0].message.content
 	    
