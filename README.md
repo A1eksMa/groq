@@ -26,6 +26,41 @@ To use API you need the Groq API token from [console.groq.com](https://console.g
 
 The main endpoint of the API transfer to original Groq API 8 params.  
 Build the dictionary with a Groq API parametres and send a POST request to API.
+
+## Endpoints
+
+The API has a main dispatcher endpoint `/` that routes requests to model-specific endpoints based on the `MODEL` parameter in the request body.
+
+### `/` (Dispatcher)
+
+This is the main entry point. It expects a POST request with a JSON body similar to the `groq_api_params` structure described below. It inspects the `MODEL` field and forwards the request to the appropriate model-specific endpoint. If the model is not found, it returns a 404 error.
+
+### Model-Specific Endpoints
+
+#### `/llama-3.3-70b-versatile`
+This endpoint is fully functional and provides the core logic for interacting with the Groq API. It supports normal, JSON, and streaming modes as shown in the examples below.
+
+#### Other Models
+The following model endpoints are currently implemented as placeholders. They will return a simple JSON response indicating that they are under development.
+- `/qwen-qwq-32b`
+- `/deepseek-r1-distill-llama-70b`
+- `/gemma2-9b-it`
+- `/compound-beta`
+- `/compound-beta-mini`
+- `/distil-whisper-large-v3-en`
+- `/llama-3.1-8b-instant`
+- `/llama-guard-3-8b`
+- `/llama3-70b-8192`
+- `/llama3-8b-8192`
+- `/meta-llama/llama-4-maverick-17b-128e-instruct`
+- `/meta-llama/llama-4-scout-17b-16e-instruct`
+- `/mistral-saba-24b`
+- `/whisper-large-v3`
+- `...and others.`
+
+## Examples
+The following examples show how to use the main dispatcher endpoint `/`. The dispatcher will automatically route the request to the correct model endpoint based on the `"MODEL"` field.
+
 ```
 groq_api_params = {
     "YOUR_SECRET_GROQ_TOKEN": {
