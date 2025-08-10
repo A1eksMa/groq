@@ -1,7 +1,9 @@
 from fastapi import APIRouter
+from .common_text_logic import handle_text_model_request
 
 router = APIRouter()
 
 @router.post("/compound-beta-mini")
-async def compound_beta_mini():
-    return {"message": "This endpoint is under development."}
+async def compound_beta_mini(groq: dict):
+    return await handle_text_model_request(groq)
+

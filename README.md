@@ -37,26 +37,22 @@ This is the main entry point. It expects a POST request with a JSON body similar
 
 ### Model-Specific Endpoints
 
-#### `/llama-3.3-70b-versatile`
-This endpoint is fully functional and provides the core logic for interacting with the Groq API. It supports normal, JSON, and streaming modes as shown in the examples below.
-
-#### Other Models
-The following model endpoints are currently implemented as placeholders. They will return a simple JSON response indicating that they are under development.
-- `/qwen-qwq-32b`
+#### Text Mode Models
+This endpoints is fully functional and provides the core logic for interacting with the Groq API. It supports normal, JSON, and streaming modes as shown in the examples below.
+- `/qwen-qwen3-32b`
 - `/deepseek-r1-distill-llama-70b`
 - `/gemma2-9b-it`
-- `/compound-beta`
-- `/compound-beta-mini`
+- and others.
+
+
+#### Multimodal Models (text-to-speech and `whisper` family)
+The following model endpoints are currently implemented as placeholders. They will return a simple JSON response indicating that they are under development.
 - `/distil-whisper-large-v3-en`
-- `/llama-3.1-8b-instant`
-- `/llama-guard-3-8b`
-- `/llama3-70b-8192`
-- `/llama3-8b-8192`
-- `/meta-llama/llama-4-maverick-17b-128e-instruct`
-- `/meta-llama/llama-4-scout-17b-16e-instruct`
-- `/mistral-saba-24b`
 - `/whisper-large-v3`
-- `...and others.`
+- `/whisper-large-v3-turbo`
+- `/playai-tts`
+- `/playai-tts-arabic`
+
 
 ## Examples
 The following examples show how to use the main dispatcher endpoint `/`. The dispatcher will automatically route the request to the correct model endpoint based on the `"MODEL"` field.
@@ -92,25 +88,29 @@ A `messages` contains the context, and looks like a list of dict:
 ```
 
 Select a `model` from the list of available models:
-- "qwen-qwq-32b"
-- "deepseek-r1-distill-llama-70b"
-- "gemma2-9b-it"
-- "compound-beta"
-- "compound-beta-mini"
-- "distil-whisper-large-v3-en"
-- "llama-3.1-8b-instant"
-- "llama-3.3-70b-versatile"
-- "llama-guard-3-8b"
-- "llama3-70b-8192"
-- "llama3-8b-8192"
-- "meta-llama/llama-4-maverick-17b-128e-instruct"
-- "meta-llama/llama-4-scout-17b-16e-instruct"
-- "mistral-saba-24b"
-- "whisper-large-v3"
-- "whisper-large-v3-turbo"
-- "playai-tts"
-- "playai-tts-arabic"
-- "allam-2-7b"  
+- "qwen-qwen3-32b",
+- "deepseek-r1-distill-llama-70b",
+- "gemma2-9b-it",
+- "compound-beta",
+- "compound-beta-mini",
+- "compound-beta-oss",
+- "distil-whisper-large-v3-en", # depricated
+- "llama-3.1-8b-instant",
+- "llama-3.3-70b-versatile",
+- "llama3-70b-8192", # depricated
+- "llama3-8b-8192", # depricated
+- "meta-llama/llama-4-maverick-17b-128e-instruct",
+- "meta-llama/llama-4-scout-17b-16e-instruct",
+- "meta-llama/llama-guard-4-12b",
+- "meta-llama/llama-prompt-guard-2-22m",
+- "meta-llama/llama-prompt-guard-2-86m",
+- "moonshotai/kimi-k2-instruct",
+- "openai/gpt-oss-20b",
+- "openai/gpt-oss-120b",
+- "whisper-large-v3",
+- "whisper-large-v3-turbo",
+- "playai-tts",
+- "playai-tts-arabic",
 (see actual models at the [Groq API](https://github.com/groq/groq-python/) or [console.groq.com](https://console.groq.com))  
 
 The API response:
