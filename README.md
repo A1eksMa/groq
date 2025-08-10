@@ -26,17 +26,59 @@ To use API you need the Groq API token from [console.groq.com](https://console.g
 
 The main endpoint of the API transfer to original Groq API 8 params.  
 Build the dictionary with a Groq API parametres and send a POST request to API.
+
+## Architecture
+
+The project is designed for easy extension with new models. The logic for this is contained within the `groq/routers/` directory.
+
+- **Model-Specific Files:** For each supported model (e.g., `gemma2_9b_it`), there is a corresponding Python file (e.g., `gemma2_9b_it.py`). This file defines the specific API endpoint for that model.
+
+- **Common Logic Files:** To avoid code duplication, there are files named `common_*_logic.py` (e.g., `common_text_logic.py`, `common_tts_logic.py`). These files contain the shared processing logic for different categories of models (text generation, text-to-speech, etc.).
+
+Currently, most model-specific files simply call the appropriate function from a common logic file. However, this structure provides flexibility for the future. If a specific model requires unique parameters or special handling, its dedicated file can be easily modified to implement that custom logic without affecting other models.
+
+## Endpoints
+
+The API has a main dispatcher endpoint `/` that routes requests to model-specific endpoints based on the `MODEL` parameter in the request body.
+
+### `/` (Dispatcher)
+
+This is the main entry point. It expects a POST request with a JSON body similar to the `groq_api_params` structure described below. It inspects the `MODEL` field and forwards the request to the appropriate model-specific endpoint. If the model is not found, it returns a 404 error.
+
+### Model-Specific Endpoints
+
+#### Text Mode Models
+This endpoints is fully functional and provides the core logic for interacting with the Groq API. It supports normal, JSON, and streaming modes as shown in the examples below.
+- `/qwen-qwen3-32b`
+- `/deepseek-r1-distill-llama-70b`
+- `/gemma2-9b-it`
+- and others.
+
+
+#### Multimodal Models (text-to-speech and `whisper` family)
+The following model endpoints are currently implemented as placeholders. They will return a simple JSON response indicating that they are under development.
+- `/distil-whisper-large-v3-en`
+- `/whisper-large-v3`
+- `/whisper-large-v3-turbo`
+- `/playai-tts`
+- `/playai-tts-arabic`
+
+
+## Examples
+The following examples show how to use the main dispatcher endpoint `/`. The dispatcher will automatically route the request to the correct model endpoint based on the `"MODEL"` field.
+
 ```
 groq_api_params = {
-    "YOUR_SECRET_GROQ_TOKEN": "Groq_API_token",
-    "MODEL": model: str,
-    "MESSAGES": messages: Iterable[ChatCompletionMessageParam],
-    "TEMPERATURE": temperature: Optional[float] | NotGiven = NOT_GIVEN,
-    "MAX_COMPLETION_TOKENS": max_completion_tokens: Optional[int] | NotGiven = NOT_GIVEN,
-    "TOP_P": top_p: Optional[float] | NotGiven = NOT_GIVEN,
-    "STREAM": stream: Optional[Literal[False]] | NotGiven = NOT_GIVEN,
-    "RESPONSE_FORMAT": response_format: Optional[completion_create_params.ResponseFormat] | NotGiven = NOT_GIVEN,
-    "STOP": stop: Union[Optional[str], List[str], None] | NotGiven = NOT_GIVEN,
+    "YOUR_SECRET_GROQ_TOKEN": {
+        "MODEL": model: str,
+        "MESSAGES": messages: Iterable[ChatCompletionMessageParam],
+        "TEMPERATURE": temperature: Optional[float] | NotGiven = NOT_GIVEN,
+        "MAX_COMPLETION_TOKENS": max_completion_tokens: Optional[int] | NotGiven = NOT_GIVEN,
+        "TOP_P": top_p: Optional[float] | NotGiven = NOT_GIVEN,
+        "STREAM": stream: Optional[Literal[False]] | NotGiven = NOT_GIVEN,
+        "RESPONSE_FORMAT": response_format: Optional[completion_create_params.ResponseFormat] | NotGiven = NOT_GIVEN,
+        "STOP": stop: Union[Optional[str], List[str], None] | NotGiven = NOT_GIVEN,
+    }
 }
 ```
 (see [Groq API](https://github.com/groq/groq-python/) for details)  
@@ -56,25 +98,26 @@ A `messages` contains the context, and looks like a list of dict:
 ```
 
 Select a `model` from the list of available models:
-- "qwen-qwq-32b"
-- "deepseek-r1-distill-llama-70b"
-- "gemma2-9b-it"
-- "compound-beta"
-- "compound-beta-mini"
-- "distil-whisper-large-v3-en"
-- "llama-3.1-8b-instant"
-- "llama-3.3-70b-versatile"
-- "llama-guard-3-8b"
-- "llama3-70b-8192"
-- "llama3-8b-8192"
-- "meta-llama/llama-4-maverick-17b-128e-instruct"
-- "meta-llama/llama-4-scout-17b-16e-instruct"
-- "mistral-saba-24b"
-- "whisper-large-v3"
-- "whisper-large-v3-turbo"
-- "playai-tts"
-- "playai-tts-arabic"
-- "allam-2-7b"  
+- "qwen-qwen3-32b",
+- "deepseek-r1-distill-llama-70b",
+- "gemma2-9b-it",
+- "compound-beta",
+- "compound-beta-mini",
+- "compound-beta-oss",
+- "llama-3.1-8b-instant",
+- "llama-3.3-70b-versatile",
+- "meta-llama/llama-4-maverick-17b-128e-instruct",
+- "meta-llama/llama-4-scout-17b-16e-instruct",
+- "meta-llama/llama-guard-4-12b",
+- "meta-llama/llama-prompt-guard-2-22m",
+- "meta-llama/llama-prompt-guard-2-86m",
+- "moonshotai/kimi-k2-instruct",
+- "openai/gpt-oss-20b",
+- "openai/gpt-oss-120b",
+- "whisper-large-v3",
+- "whisper-large-v3-turbo",
+- "playai-tts",
+- "playai-tts-arabic",
 (see actual models at the [Groq API](https://github.com/groq/groq-python/) or [console.groq.com](https://console.groq.com))  
 
 The API response:
@@ -96,14 +139,15 @@ prompt = "Hello World!"
 
 # Set the dictionary for Groq API parametres
 groq_api_params = {
-    "YOUR_SECRET_GROQ_TOKEN": "Groq_API_token",
-    "MODEL": "llama-3.3-70b-versatile",
-    "MESSAGES": [{"role": "user", "content": prompt}],
-    "TEMPERATURE": 1,
-    "MAX_COMPLETION_TOKENS": 1024,
-    "TOP_P": 1,
-    "STREAM": False,
-    "STOP": None,
+    "YOUR_SECRET_GROQ_TOKEN": {
+        "MODEL": "llama-3.3-70b-versatile",
+        "MESSAGES": [{"role": "user", "content": prompt}],
+        "TEMPERATURE": 1,
+        "MAX_COMPLETION_TOKENS": 1024,
+        "TOP_P": 1,
+        "STREAM": False,
+        "STOP": None,
+    }
 }
 
 # Send a POST request to the API
@@ -135,24 +179,25 @@ URL = f"http://{HOST}:{PORT}/"
 
 # Set the dictionary for Groq API parametres
 groq_api_params = {
-    "YOUR_SECRET_GROQ_TOKEN": "Groq_API_token",
-    "MODEL": "llama-3.3-70b-versatile",
-    "MESSAGES": list(),
-    "TEMPERATURE": 1,
-    "MAX_COMPLETION_TOKENS": 1024,
-    "TOP_P": 1,
-    "STREAM": False,
-    "RESPONSE_FORMAT": {'type': 'json_object'},
-    "STOP": None,
+    "YOUR_SECRET_GROQ_TOKEN": {
+        "MODEL": "llama-3.3-70b-versatile",
+        "MESSAGES": list(),
+        "TEMPERATURE": 1,
+        "MAX_COMPLETION_TOKENS": 1024,
+        "TOP_P": 1,
+        "STREAM": False,
+        "RESPONSE_FORMAT": {'type': 'json_object'},
+        "STOP": None,
+    }
 }
 
 # Add system prompt
-groq_api_params["MESSAGES"].append({'role' : 'system',
+groq_api_params["YOUR_SECRET_GROQ_TOKEN"]["MESSAGES"].append({'role' : 'system',
                                     'content' : 'Always return me json, that looks like a:\
                                                {"ANSWER": text string with your message}'})
 
 # Add prompt
-groq_api_params["MESSAGES"].append({'role' : 'user',
+groq_api_params["YOUR_SECRET_GROQ_TOKEN"]["MESSAGES"].append({'role' : 'user',
                                     'content' : 'Hello World!'})
 
 # Send a POST request to the API
@@ -188,14 +233,15 @@ prompt = "Hello World!"
 
 # Set the dictionary for Groq API parametres
 groq_api_params = {
-    "YOUR_SECRET_GROQ_TOKEN": "Groq_API_token",
-    "MODEL": "llama-3.3-70b-versatile",
-    "MESSAGES": [{"role": "user", "content": prompt}],
-    "TEMPERATURE": 1,
-    "MAX_COMPLETION_TOKENS": 1024,
-    "TOP_P": 1,
-    "STREAM": True,
-    "STOP": None,
+    "YOUR_SECRET_GROQ_TOKEN": {
+        "MODEL": "llama-3.3-70b-versatile",
+        "MESSAGES": [{"role": "user", "content": prompt}],
+        "TEMPERATURE": 1,
+        "MAX_COMPLETION_TOKENS": 1024,
+        "TOP_P": 1,
+        "STREAM": True,
+        "STOP": None,
+    }
 }
 
 # Send a POST request to the API
