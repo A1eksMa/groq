@@ -27,6 +27,16 @@ To use API you need the Groq API token from [console.groq.com](https://console.g
 The main endpoint of the API transfer to original Groq API 8 params.  
 Build the dictionary with a Groq API parametres and send a POST request to API.
 
+## Architecture
+
+The project is designed for easy extension with new models. The logic for this is contained within the `groq/routers/` directory.
+
+- **Model-Specific Files:** For each supported model (e.g., `gemma2_9b_it`), there is a corresponding Python file (e.g., `gemma2_9b_it.py`). This file defines the specific API endpoint for that model.
+
+- **Common Logic Files:** To avoid code duplication, there are files named `common_*_logic.py` (e.g., `common_text_logic.py`, `common_tts_logic.py`). These files contain the shared processing logic for different categories of models (text generation, text-to-speech, etc.).
+
+Currently, most model-specific files simply call the appropriate function from a common logic file. However, this structure provides flexibility for the future. If a specific model requires unique parameters or special handling, its dedicated file can be easily modified to implement that custom logic without affecting other models.
+
 ## Endpoints
 
 The API has a main dispatcher endpoint `/` that routes requests to model-specific endpoints based on the `MODEL` parameter in the request body.
@@ -94,11 +104,8 @@ Select a `model` from the list of available models:
 - "compound-beta",
 - "compound-beta-mini",
 - "compound-beta-oss",
-- "distil-whisper-large-v3-en", # depricated
 - "llama-3.1-8b-instant",
 - "llama-3.3-70b-versatile",
-- "llama3-70b-8192", # depricated
-- "llama3-8b-8192", # depricated
 - "meta-llama/llama-4-maverick-17b-128e-instruct",
 - "meta-llama/llama-4-scout-17b-16e-instruct",
 - "meta-llama/llama-guard-4-12b",
